@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Clase que representa el servidor para el juego Wordle.
+ */
 public class ServerTcp {
     int port;
     Logic logicWordle;
@@ -19,6 +22,9 @@ public class ServerTcp {
         System.out.println("Server opened by port "+port);
     }
 
+    /**
+     * Método que escucha y acepta conexiones de clientes, crea un hilo para cada cliente.
+     */
     public void listen() {
         ServerSocket serverSocket = null;
         Socket clientSocket = null;

@@ -6,6 +6,9 @@ import model.Move;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Clase que representa un hilo para la comunicación con un cliente en el juego Wordle.
+ */
 public class ThreadTcp implements Runnable{
     Socket clientSocket = null;
     InputStream in = null;
@@ -24,6 +27,9 @@ public class ThreadTcp implements Runnable{
         out = clientSocket.getOutputStream();
     }
 
+    /**
+     * Implementa la lógica del juego y la comunicación con un cliente específico.
+     */
     public void run() {
         winnerWord = logicWordle.getWinnerWord();
         System.out.println("Winner word is: " + winnerWord);
@@ -31,13 +37,13 @@ public class ThreadTcp implements Runnable{
         try {
             while (!gameOver) {
 
-                ObjectOutputStream oos = new ObjectOutputStream(out);
+                ObjectOutputStream oos = new ObjectOutputStream(out); //Envia el tablero al cliente
                 oos.writeObject(board);
                 oos.flush();
 
                 ObjectInputStream ois = new ObjectInputStream(in);
                 try {
-                    moves = (Move) ois.readObject();
+                    moves = (Move) ois.readObject(); //Lee el movimiento
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -49,6 +55,7 @@ public class ThreadTcp implements Runnable{
                     board.players.put(moves.getName(), attempts);
                 }
 
+                //Comprobación de la palabra
                 board.response = logicWordle.check(moves.getWord(), board.players.get(moves.getName()));
 
                if (board.response.equals("winner")) {

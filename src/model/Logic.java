@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Clase que representa la lógica del juego Wordle.
+ */
 public class Logic {
     String winnerWord;
     final int numAttempts = 6;
@@ -11,6 +14,7 @@ public class Logic {
 
     ArrayList<String> wordsList = new ArrayList<>();
 
+    //Colores para las palabras
     String redWords = "\u001B[31m";
     String greenWords = "\u001B[32m";
     String yellowWords = "\u001B[33m";
@@ -37,6 +41,9 @@ public class Logic {
         winnerWord = randomWord();
     }
 
+    /**
+     * Verifica la validez de la palabra ingresada y determina el resultado.
+     */
     public String check(String word, int attempts) {
         String response;
 
@@ -52,19 +59,25 @@ public class Logic {
         return response;
     }
 
+    /**
+    * Genera una palabra aleatoria de la lista de palabras disponibles.
+    */
     public String randomWord() {
         Random random = new Random();
         int position = random.nextInt(wordsList.size()); //Extrae una palabra aleatoria según el índice
         return  wordsList.get(position);
     }
 
+    /**
+    * Compara las letras de la palabra del jugador con la palabra ganadora y devuelve el resultado formatado.
+    */
     public String checkWinner(String clientWord, String winnerWord) {
         clientWord = clientWord.toUpperCase();
 
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < clientWord.length(); i++) {
             char c = clientWord.charAt(i);
-            if (winnerWord.indexOf(c) == i) {
+            if (winnerWord.indexOf(c) == i) { //crea la respuesta con los colores por letra
                 result.append(greenWords).append(c).append(originalColor);
             } else if (winnerWord.indexOf(c) != -1) {
                 result.append(yellowWords).append(c).append(originalColor);

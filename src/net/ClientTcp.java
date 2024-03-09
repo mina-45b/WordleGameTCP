@@ -10,6 +10,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Clase que representa el cliente del juego Wordle.
+ */
 public class ClientTcp  extends Thread{
     String name;
     Socket socket;
@@ -36,12 +39,16 @@ public class ClientTcp  extends Thread{
         move = new Move();
     }
 
+
+    /**
+     * Implementación del ciclo de juego del cliente.
+     */
     @Override
     public void run() {
 
         while (continueConnected) {
 
-            board = getRequest();
+            board = getRequest(); //Desempaqueta el tablero
 
             System.out.println(board);
             switch (board.response) {
@@ -62,7 +69,7 @@ public class ClientTcp  extends Thread{
                     } else {
                         System.out.println(board.response);
                     }
-                    System.out.println("Please enter a word:");
+                    System.out.println("Please enter a word:"); //Nueva palabra del usuario
                     move.setWord(scanner.next());
                     move.setName(name);
                     try {
@@ -78,7 +85,10 @@ public class ClientTcp  extends Thread{
         close(socket);
     }
 
-    private Board getRequest() {
+    /**
+     * Recibe y deserializa el tablero de juego desde el servidor.
+     */
+        private Board getRequest() {
         try {
             ObjectInputStream ois = new ObjectInputStream(in);
             board = (Board) ois.readObject();
@@ -87,6 +97,10 @@ public class ClientTcp  extends Thread{
         }
         return board;
     }
+
+    /**
+     * Cierra la conexión del socket y maneja posibles excepciones.
+     */
 
     private void close(Socket socket){
         try {            if(socket!=null && !socket.isClosed()){
